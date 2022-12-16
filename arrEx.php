@@ -1,4 +1,10 @@
 <?php
+include_once "utils/index.php";
+
+use Utils\Sorter\ISorter;
+use Utils\Sorter\BubbleSort;
+use Utils\Sorter\QuickSort;
+
 $numbers = array(1,3,5,4,7,3,4,10,20);
 
 function findMax($arr){
@@ -39,19 +45,21 @@ function deleteFirstKey($arr){
     return $arr;
 }
 
-function sortArr($arr){
-    $len = count($arr);
-    for ($i = 0; $i < $len - 1; $i++)
-      for ($j = $i + 1; $j < $len; $j++)
-        if ($arr[$i] > $arr[$j]) {
-          $x = $arr[$j];
-            $arr[$j] = $arr[$i];
-            $arr[$i] = $x;
-        }
+function sortArr(ISorter $sorter, $arr){
+    $arr = $sorter->sort($arr);
     return $arr;
 }
 
+function deleteDuplicates(ISorter $sorter, $arr){
+    $arr = $sorter->sort($arr);
+    for($i=0; $i < count($arr) -1; $i++){
+        if($arr[$i] === $arr[$i+1] ){
+            unset($arr[$i]);
+        }
+    }
+    return  $arr;
+}
 
-print_r( sortArr($numbers));
+print_r(sortArr(new QuickSort(), $numbers));
 
 ?>
